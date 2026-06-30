@@ -1,0 +1,71 @@
+{
+  "ticketCategoryId": "1521498539136651304",
+  "transcriptLogChannelId": "1280210563674407036",
+  "supportRoleIds": [
+    "1280212401249194064"
+  ],
+  "maxOpenTicketsPerUser": 1,
+  "ticketChannelNameFormat": "ticket-{username}",
+  "closeChannelOnClose": true,
+  "deleteDelaySeconds": 5,
+  "dmUserOnEvents": {
+    "open": true,
+    "close": true,
+    "reopen": true
+  },
+  "presence": {
+    "type": "Watching",
+    "textFormat": "{count} tickets"
+  },
+  "panel": {
+    "title": "OpenTicket Support Center",
+    "description": "Welcome to OpenTicket Support Center!\n\nWe're here to help you with any questions or issues you may have. Please select the appropriate category below to create a support ticket.",
+    "color": "#5865F2",
+    "thumbnail": "https://images-ext-1.discordapp.net/external/yWGmoIpYmdgE3bHjQ9eF2GacMNh68VIOC2R-RUW3Z7A/%3Fsize%3D4096/https/cdn.discordapp.com/icons/1279011278135885967/a02221834fa35c2966f4e935e5332ed9.png?format=webp&quality=lossless&width=705&height=705",
+    "supportHours": "24/7",
+    "responseTime": "< 30 minutes",
+    "links": [
+      { "name": "Knowledge Base", "url": "https://riviyax.site", "emoji": "📚" },
+      { "name": "Documentation", "url": "https://riviyax.site", "emoji": "📖" },
+      { "name": "Status Page", "url": "https://riviyax.site", "emoji": "📊" }
+    ],
+    "categories": [
+      { "label": "Report Bug", "description": "Report bugs and issues", "emoji": "🐛", "value": "bug", "categoryId": "1521513085553082388" },
+      { "label": "Billing & Payments", "description": "Payment issues, invoices, refunds", "emoji": "💳", "value": "billing", "categoryId": "1521513129677291521" }
+    ],
+    "footer": "OpenTicket · Ticket System by Riviya_X"
+  },
+  "embeds": {
+    "ticketOpened": {
+      "title": "Ticket Opened",
+      "description": "Hello {user}, thanks for reaching out! Support will be with you shortly.\n\nTo close this ticket, click the **Close Ticket** button below.",
+      "color": "#57F287",
+      "closeButtonLabel": "Close Ticket",
+      "claimButtonLabel": "Claim Ticket"
+    },
+    "ticketClosed": {
+      "title": "Ticket Closed",
+      "description": "This ticket was closed by {closer}.",
+      "color": "#ED4245",
+      "reopenButtonLabel": "Reopen Ticket",
+      "deleteButtonLabel": "Delete Channel"
+    },
+    "ticketReopened": {
+      "title": "Ticket Reopened",
+      "description": "This ticket was reopened by {reopener}.",
+      "color": "#FEE75C"
+    },
+    "logOpen": {
+      "title": "🟢 Ticket Opened",
+      "color": "#57F287"
+    },
+    "logClose": {
+      "title": "🔴 Ticket Closed",
+      "color": "#ED4245"
+    },
+    "logReopen": {
+      "title": "🟡 Ticket Reopened",
+      "color": "#FEE75C"
+    }
+  }
+}
