@@ -1,4 +1,4 @@
-# Discord Ticket Bot
+# OpenTicket Discord Ticket Bot
 
 A fully customizable Discord support-ticket bot built with discord.js v14 and MongoDB.
 
@@ -37,12 +37,7 @@ A fully customizable Discord support-ticket bot built with discord.js v14 and Mo
    - `supportRoleIds`: array of role IDs that get access to every ticket.
    - All embed titles, descriptions, button labels, and colors can be edited freely. Edits apply on the next interaction — no restart required.
 
-5. **Register slash commands** (only to your `GUILD_ID`)
-   ```bash
-   npm run deploy
-   ```
-
-6. **Run the bot**
+5. **Run the bot**
    ```bash
    npm start
    ```
@@ -64,7 +59,6 @@ config.json              # All customizable text/IDs/behavior
 .env                      # Secrets & the single-guild lock
 src/
   index.js                # Entry point
-  deploy-commands.js       # Registers slash commands to GUILD_ID only
   database/connect.js      # MongoDB connection
   models/Ticket.js         # Ticket schema
   models/Counter.js        # Auto-incrementing ticket numbers
