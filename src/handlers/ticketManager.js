@@ -9,7 +9,12 @@ const {
 
 const Ticket = require('../models/Ticket');
 const { getNextSequence } = require('../models/Counter');
-const { loadConfig } = require('../utils/config');
+const {
+  loadConfig,
+  getCategoryLabel,
+  getRoleIdsForCategory,
+  isStaffOrAdmin
+} = require('../utils/config');
 const { generateTranscript } = require('../utils/transcript');
 const { updatePresence } = require('../utils/presence');
 
@@ -74,6 +79,13 @@ async function openTicket(interaction, category = 'general', extra = {}) {
 
   const categoryConfig = config.panel?.categories?.find((c) => c.value === category);
   const parentId = categoryConfig?.categoryId || config.ticketCategoryId || undefined;
+  const categoryLabel = getCategoryLabel(config, category);
+
+  // Which roles get access to this ticket. Controlled by `perCategoryRoles`
+  // in config.json: false = every category shares `supportRoleIds`,
+  // true = each category uses its own `roleIds` (falls back to
+  // `supportRoleIds` if that category doesn't define any).
+  const roleIds = getRoleIdsForCategory(config, category);
 
   const permissionOverwrites = [
     { id: guild.roles.everyone.id, deny: [PermissionFlagsBits.ViewChannel] },
@@ -95,7 +107,7 @@ async function openTicket(interaction, category = 'general', extra = {}) {
         PermissionFlagsBits.ReadMessageHistory
       ]
     },
-    ...config.supportRoleIds.map((roleId) => ({
+    ...roleIds.map((roleId) => ({
       id: roleId,
       allow: [
         PermissionFlagsBits.ViewChannel,
@@ -134,6 +146,8 @@ async function openTicket(interaction, category = 'general', extra = {}) {
     .setFooter({ text: `Ticket #${ticketNumber}` })
     .setTimestamp();
 
+  openedEmbed.addFields({ name: 'Category', value: categoryLabel, inline: true });
+
   if (subject) {
     openedEmbed.addFields({ name: 'Subject', value: subject });
   }
@@ -154,9 +168,7 @@ async function openTicket(interaction, category = 'general', extra = {}) {
 
   await channel.send({
     content: `<@${user.id}>${
-      config.supportRoleIds.length
-        ? ' ' + config.supportRoleIds.map((r) => `<@&${r}>`).join(' ')
-        : ''
+      roleIds.length ? ' ' + roleIds.map((r) => `<@&${r}>`).join(' ') : ''
     }`,
     embeds: [openedEmbed],
     components: [actionRow]
@@ -169,7 +181,7 @@ async function openTicket(interaction, category = 'general', extra = {}) {
     .addFields(
       { name: 'Ticket', value: `#${ticketNumber} (${channel})`, inline: true },
       { name: 'Opened By', value: `${user.tag} (${user.id})`, inline: true },
-      { name: 'Category', value: category, inline: true }
+      { name: 'Category', value: categoryLabel, inline: true }
     )
     .setTimestamp();
   if (subject) {
@@ -196,6 +208,15 @@ async function claimTicket(interaction) {
   if (!ticket) {
     return interaction.reply({ content: 'This is not an active ticket channel.', ephemeral: true });
   }
+
+  const roleIds = getRoleIdsForCategory(config, ticket.category);
+  if (!isStaffOrAdmin(interaction.member, roleIds)) {
+    return interaction.reply({
+      content: 'Only support staff or administrators can claim this ticket.',
+      ephemeral: true
+    });
+  }
+
   ticket.claimedBy = interaction.user.id;
   await ticket.save();
   await interaction.reply({ content: `🙋 Ticket claimed by <@${interaction.user.id}>.` });
@@ -338,6 +359,16 @@ async function deleteTicketChannel(interaction) {
   if (!ticket || ticket.status !== 'closed') {
     return interaction.reply({
       content: 'Only closed tickets can be deleted.',
+      ephemeral: true
+    });
+  }
+
+  // Ticket openers (regular members) may only close their ticket, not
+  // delete the channel — deleting is a staff/admin-only action.
+  const roleIds = getRoleIdsForCategory(config, ticket.category);
+  if (!isStaffOrAdmin(interaction.member, roleIds)) {
+    return interaction.reply({
+      content: 'Only support staff or administrators can delete a ticket channel. You may close the ticket, but deletion is staff-only.',
       ephemeral: true
     });
   }

@@ -1,8 +1,8 @@
 {
-  "ticketCategoryId": "1521498539136651304",
-  "transcriptLogChannelId": "1280210563674407036",
+  "ticketCategoryId": "",
+  "transcriptLogChannelId": "",
   "supportRoleIds": [
-    "1280212401249194064"
+    ""
   ],
   "maxOpenTicketsPerUser": 1,
   "ticketChannelNameFormat": "ticket-{username}",
@@ -30,8 +30,8 @@
       { "name": "Status Page", "url": "https://riviyax.site", "emoji": "📊" }
     ],
     "categories": [
-      { "label": "Report Bug", "description": "Report bugs and issues", "emoji": "🐛", "value": "bug", "categoryId": "1521513085553082388" },
-      { "label": "Billing & Payments", "description": "Payment issues, invoices, refunds", "emoji": "💳", "value": "billing", "categoryId": "1521513129677291521" }
+      { "label": "Report Bug", "description": "Report bugs and issues", "emoji": "🐛", "value": "bug", "categoryId": "" },
+      { "label": "Billing & Payments", "description": "Payment issues, invoices, refunds", "emoji": "💳", "value": "billing", "categoryId": "" }
     ],
     "footer": "OpenTicket · Ticket System by Riviya_X"
   },
