@@ -1,5 +1,5 @@
 {
-  "name": "discord-ticket-bot",
+  "name": "OpenTicket",
   "version": "1.0.0",
   "description": "Customizable Discord ticket bot with MongoDB storage, private logging, and transcripts",
   "main": "src/index.js",
